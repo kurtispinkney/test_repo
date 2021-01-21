@@ -1,0 +1,34 @@
+pipelines:
+  main:
+    environment_variables:
+      GOOGLE_APPLICATION_CREDENTIALS: ci/etc/dev-user-service-account.json
+      HELM_CHART_DEPLOY_TYPE: some_deploy_type
+      KUBECONFIG: ci/etc/dev-kubeconfig.yaml
+      SR_APPBRANCH: some_app_branch
+      SR_APPNAME: some_app_name
+      SR_APPPATH: some_app_path
+      SR_CUSTNAME: some_customer_name
+      SR_TEAMNAME: some_team_name
+    group: some_group
+    lock_behavior: unlockWhenFinished
+    materials:
+      ci:
+        auto_update: 'true'
+        branch: master
+        destination: ci
+        git: git@github.com:kurtispinkney/test_repo.git
+        shallow_clone: 'true'
+      main:
+        destination: ams
+        options:
+          auto_update: 'true'
+          branch: main
+          path: /
+          shallow_clone: 'true'
+          url: git@github.com:kurtispinkney/test_repo.git
+        plugin_configuation:
+          id: git-path
+      upstream:
+        pipeline: docker-python27ams
+        stage: build_and_publish_image
+    template: some_template
